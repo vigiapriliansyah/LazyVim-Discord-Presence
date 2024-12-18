@@ -3,7 +3,7 @@ return {
   --jiriks74/presence.nvim
   event = "UIEnter",
   opts = {
-auto_update = true,
+			auto_update = true,
 			neovim_image_text = "Punya Gw",
 			main_image = "neovim",
 			client_id = "1315995894725873737",
@@ -34,6 +34,7 @@ auto_update = true,
 			plugin_manager_text = "Managing plugins", -- Text for plugin manager
 			reading_text = "Reading file %s", -- Text for read-only files
 			workspace_text = "Workspace: %s", -- Text for workspace or Git repository
+
   },
 }
 
