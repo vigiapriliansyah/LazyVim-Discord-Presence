@@ -1,7 +1,7 @@
 return {
     {
     'vyfor/cord.nvim',
-    build = 'cargo build --release',
+    build = 'cargo build --release', --change to ./build if using linux, and move the cord.dll from release to cord.nvim
     event = 'VeryLazy',
     config = function()
       require('cord').setup {
