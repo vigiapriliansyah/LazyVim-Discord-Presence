@@ -1,68 +1,91 @@
-return {
+
     {
     'vyfor/cord.nvim',
-    build = 'cargo build --release', --change to ./build if using linux, and move the cord.dll from release to cord.nvim
+    build = ':Cord update',
     event = 'VeryLazy',
     config = function()
-      require('cord').setup {
-        usercmds = true,
-        log_level = 'error',
-        timer = {
-          interval = 1500,
+      require('cord').setup{
+        enabled = true,
+        log_level = vim.log.levels.OFF, -- Matikan log jika tidak butuh debugging
+        editor = {
+          client = "nvchad", -- Menggunakan NVChad sebagai editor
+          tooltip = "Neovim + NVChad is 🔥",
+          icon = nil, -- Bisa diisi dengan custom icon jika ingin
+        },
+        display = {
+          theme = 'atom',
+          flavor = 'dark',
+          swap_field = false,
+          swap_icon = false,
+        },
+        timestamp = {
+          enabled = true,
           reset_on_idle = false,
           reset_on_change = false,
         },
-        editor = {
-          client = 'nvchad',
-          tooltip = 'The Superior Text Editor',
-          image = nil,
-        },
-        display = {
-          show_time = true,                           -- Display start timestamp
-          show_repository = true,                     -- Display 'View repository' button linked to repository url, if any
-          show_cursor_position = false,               -- Display line and column number of cursor's position
-          swap_fields = false,                        -- If enabled, workspace is displayed first
-          swap_icons = false,                         -- If enabled, editor is displayed on the main image
-          workspace_blacklist = {},
-        },
         idle = {
-          enable = true,
-          timeout = 300000,
-          text = 'Idle',
+          enabled = true,
+          timeout = 500000, -- 8 menit sebelum status berubah menjadi "Idle"
           show_status = true,
-          disable_on_focus = false,
-          tooltip = '💤',
+          ignore_focus = true,
+          unidle_on_focus = true,
+          smart_idle = true,
+          details = "Aku Tidur💤",
+          state = nil,
+          tooltip = "💤",
           icon = nil,
         },
-         text = {
-          viewing = 'Viewing {}',
-          editing = 'Editing {}',
-          file_browser = 'Browsing files in {}',
-          plugin_manager = 'Managing plugins in {}',
-          lsp_manager = 'Configuring LSP in {}',
-          vcs = 'Committing changes in {}',
-          workspace = 'Working on {}',
+        text = {
+          workspace = function(opts) return "Working on " .. opts.workspace end,
+          viewing = function(opts) return "Viewing " .. opts.filename end,
+          editing = function(opts) return "Editing " .. opts.filename end,
+          file_browser = function(opts) return "Browsing files in " .. opts.name end,
+          plugin_manager = "Managing plugins",
+          lsp = function(opts) return "Configuring LSP" end,
+          vcs = function(opts) return "Committing changes" end,
+          diagnostics = function(opts) return "Fixing problems" end,
+          terminal = function(opts) return "Running commands" end,
+          dashboard = "NVChad Home",
         },
-        buttons = {
+         buttons = {
           {
-            label = 'View Repository',
-            url = 'git',  -- Otomatis ambil URL repo Git
+            label = "View Repository",
+            url = function(opts) return opts.repo_url end, -- Otomatis ambil URL repo Git jika ada
           },
         },
-        -- assets = {
-        --   lua = {
-        --     name = 'Lua',
-        --     icon = '1315995894725873737',  -- ID asset Discord
-        --     tooltip = 'Lua Programming',
-        --     type = 'language',
-        --   },
-        --   markdown = {
-        --     name = 'Markdown',
-        --     icon = '1315995894725873737',  -- ID asset Markdown
-        --     tooltip = 'Writing Docs',
-        --     type = 'language',
-        --   },
-        -- }
+        assets = nil,
+        variables = nil,
+         hooks = {
+          ready = nil,
+          shutdown = nil,
+          pre_activity = nil,
+          post_activity = nil,
+          idle_enter = nil,
+          idle_leave = nil,
+          workspace_change = nil,
+        },
+        plugin = nil,
+        advanced = {
+          plugin = {
+          autocmds = true,
+          cursor_update = 'on_hold',
+          match_in_mappings = true,
+          server = {
+            update = "fetch",
+            pipe_path = nil,
+            executable_path = nil,
+            timeout = 300000,
+          },
+          discord = {
+            reconnect = {
+              enabled = false,
+              interval = 5000,
+              initial = true,
+            },
+          },
+
+          }
+        },
       }
-    end,
+    end
   },
